@@ -1,9 +1,21 @@
 package board;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class BoardAccess implements BoardInterface {
+
 
 	// 게시글 개수 
 	int count = 1;
+	
+	// 현재 날짜,시간 
+	LocalDateTime now = LocalDateTime.now();
+	
+	// 포맷
+	String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy/MM/dd - HH:MM:SS"));
+	
+
 	// 게시글 목록 
 	
 	Board[] boardList = new Board[BoardInterface.MAX_COUNT]; 
@@ -14,6 +26,10 @@ public class BoardAccess implements BoardInterface {
 							"2025/03/19 - 18:00:00", "2025/03/19 - 18:00:00");
 		
 	}
+	
+	
+	
+	
 	
 	/**
 	 * 게시글 등록 
@@ -31,9 +47,10 @@ public class BoardAccess implements BoardInterface {
 			System.out.println("게시글 목록이 꽉 찼습니다.");
 			return null; 
 		}
+		
 		int no = ++count; 
-		String createdAt = "2025/03/19 - 18:00:00"; 
-		String updatedAt = "2025/03/19 - 18:00:00"; 
+		String createdAt = formatedNow; 
+		String updatedAt = formatedNow; 
 		board.setNo(no);
 		board.setCreatedAt(createdAt);
 		board.setupdatedAt(updatedAt);
@@ -62,7 +79,7 @@ public class BoardAccess implements BoardInterface {
 
 	@Override
 	public Board read(int no) {
-		if(boardList[no] == null) {
+		if(boardList[no-1] == null) {
 			System.out.println("유효한 게시글이 없습니다.");
 			return null; 
 		} 
@@ -71,15 +88,27 @@ public class BoardAccess implements BoardInterface {
 	}
 
 	@Override
-	public boolean update(Board board) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(Board upboard) {
+		int no = upboard.getNo();
+		if (boardList[no-1] == null) {
+			System.out.println("수정할 수 없는 게시글입니다.");
+			return false;
+		}
+		String createdAt = boardList[no-1].getCreatedAt();
+		String updatedAt = formatedNow;
+		
+		boardList[no-1] = new Board(no, upboard.getTitle(), upboard.getWriter(), 
+									upboard.getContent(), createdAt, updatedAt);
+		return true;
 	}
 
 	@Override
 	public boolean delete(int no) {
-		// TODO Auto-generated method stub
-		return false;
+		if (boardList[no-1] == null) {
+			System.out.println("삭제할 수 없는 게시글입니다.");
+			return false;
+		}
+		return true;
 	}
 
 }

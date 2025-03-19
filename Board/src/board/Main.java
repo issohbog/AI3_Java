@@ -29,6 +29,7 @@ public class Main {
 								System.out.println(board);
 							}
 						break;
+						
 			case 2: 	// 게시글 등록
 						System.out.println("제목 : ");
 						String title = sc.nextLine(); 
@@ -46,14 +47,46 @@ public class Main {
 						}
 						break;
 		
-			case 3: 	//게시글 조회 
-						System.out.println("조회 할 게시글 번호를 입력하세요.");
+			case 3: 	// 게시글 조회 
+						System.out.println("조회할 게시글 번호를 입력하세요.");
 						int no = sc.nextInt();
 						Board oneboard = boardInterface.read(no);
 						System.out.println(oneboard);
-						
 						break; 
 						
+			case 4: 	// 게시글 수정		
+						System.out.println("수정할 게시글 번호를 입력하세요.");
+						no = sc.nextInt();
+						
+						sc.nextLine();					//  enter 초기화
+						
+						System.out.println("제목 : ");
+						title = sc.nextLine(); 
+						System.out.println("작성자 : ");
+						writer = sc.nextLine(); 
+						System.out.println("내용 : ");
+						content = sc.nextLine(); 
+
+						
+						Board upboard = new Board(no, title, writer, content);
+						boolean successUpdate = boardInterface.update(upboard);
+						
+						if(successUpdate == true) {
+							System.out.println("게시글 수정에 성공하였습니다. ");
+						}
+						break;
+						
+			case 5: 	// 게시글 삭제
+						System.out.println("삭제할 게시글 번호를 입력하세요");
+						no = sc.nextInt();
+						
+						boolean successDelete = boardInterface.delete(no);
+						
+						if(successDelete == true) {
+							System.out.println("게시글을 삭제하였습니다. ");
+						}
+						
+						break; 
 			default:
 				break;
 			}
@@ -61,5 +94,6 @@ public class Main {
 			
 		} while (true);
 
+		sc.close();
 	}
 }

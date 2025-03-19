@@ -31,6 +31,14 @@ public class Board {
 		this.content = content;
 	}
 	
+	// 내가 추가한 생성자 
+	public Board(int no, String title, String writer, String content) {
+		this.no = no;
+		this.title = title;
+		this.writer = writer; 
+		this.content = content;
+	}
+
 	// 전체 매개변수 생성자
 	public Board(int no, String title, String writer, String content, String createdAt, String updatedAt) {
 		this.no = no;
