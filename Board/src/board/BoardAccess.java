@@ -77,38 +77,107 @@ public class BoardAccess implements BoardInterface {
 		return boardList;
 	}
 
+	/**
+	 * 게시글 조회 
+	 * 1. 넘겨받은 번호 no가 유효하지 않으면, null을 반화 
+	 * 2. 게시글 번호 no가 유효하면,
+	 * 	  번호에 해당하는 boardList[] 의 게시글 요소를 반환 
+	 */
 	@Override
 	public Board read(int no) {
-		if(boardList[no-1] == null) {
-			System.out.println("유효한 게시글이 없습니다.");
+		// 유효성 검사 
+		if ( no < 1 || no > BoardInterface.MAX_COUNT) {
+			System.err.println("게시글 번호는 1~");
+			System.err.println(BoardInterface.MAX_COUNT + "번 까지만 존재합니다. ");
 			return null; 
-		} 
-		System.out.println(no + "번 게시글을 조회합니다. ");
-		return boardList[no-1];
-	}
-
-	@Override
-	public boolean update(Board upboard) {
-		int no = upboard.getNo();
-		if (boardList[no-1] == null) {
-			System.out.println("수정할 수 없는 게시글입니다.");
-			return false;
 		}
-		String createdAt = boardList[no-1].getCreatedAt();
-		String updatedAt = formatedNow;
+		System.out.println(no + "번 게시글을 조회합니다. ");
+		return boardList[no-1]; 	// index 는 0 부터!
 		
-		boardList[no-1] = new Board(no, upboard.getTitle(), upboard.getWriter(), 
-									upboard.getContent(), createdAt, updatedAt);
+	}
+	
+	/**
+	 * 게시글 수정 
+	 * 1. 수정할 게시글 번호 no가 유효하지 않으면, false를 반환 
+	 * 2. 수정할 게시글 번호 no가 유효하면,
+	 * 	 - 번호에 해당하는 boardList[] 의 게시글 요소를 반환 
+	 * 	 - 수정일자(updatedAt) 을 현재 날짜/ 시간으로 변경 
+	 *   - 수정 완료 후 , true를 반환 
+	 * 
+	 */
+	@Override
+	public boolean update(Board board) {
+		int no = board.getNo();
+		if ( no < 1 || no > BoardInterface.MAX_COUNT) {
+			System.err.println("게시글 번호는 1~");
+			System.err.println(BoardInterface.MAX_COUNT + "번 까지만 존재합니다. ");
+			return false; 
+		}
+		
+		// 기존 게시글 정보 조회 
+		Board updateBoard = boardList[no-1]; 
+		
+		// 사용자가 수정한 글정보
+		String updateTitle = board.getTitle(); 
+		String updateWriter = board.getWriter(); 
+		String updateContent = board.getContent(); 
+		
+		// 수정할 정보 변경 
+		updateBoard.setTitle(updateTitle); 
+		updateBoard.setWriter(updateWriter); 
+		updateBoard.setContent(updateContent); 
+		
+		// 수정일자 현재/날짜 시간으로 변경 
+		updateBoard.setupdatedAt("2025/03/20 - 11:00"); 
+		
+//		boardList[no-1] = updateBoard; 
 		return true;
 	}
 
+	/**
+	 * 게시글 삭제 
+	 * 1. 삭제할 게시글 번호 no 가 유효하지 않으면, false 반환 
+	 * 2. 게시글이 하나도 존재하지 않으면, false 반환 
+	 * 3. 삭제할 게시글 번호 no가 유효하면 
+	 * 	- 번호에 해당하는 boardList[] 요소를 null로 변경 (삭제) 
+	 * 	- 해당 index 다음의 요소들을 앞으로 한칸씩 당겨준다. 
+	 * 	- 게시글 개수 count를 1개씩 감소시킨다. 
+	 * 4. 글번호 재세팅 
+	 */
 	@Override
 	public boolean delete(int no) {
-		if (boardList[no-1] == null) {
-			System.out.println("삭제할 수 없는 게시글입니다.");
-			return false;
+		// 유효성 검사 
+		if ( no < 1 || no > BoardInterface.MAX_COUNT) {
+			System.err.println("게시글 번호는 1~");
+			System.err.print(BoardInterface.MAX_COUNT + "번 까지만 존재합니다. ");
+			return false; 
 		}
-		return true;
+		if ( count == 0 ) {
+			System.err.println("삭제할 게시글이 없습니다. ");
+			return false; 
+		}
+		// 게시글 삭제
+		boardList[no-1] = null; 
+		
+		// 앞으로 한칸씩 당기기 
+		for (int i = no; i < boardList.length; i++) {
+			// 바로 앞의 위치 = 현재 접근 위치 
+			boardList[i-1] = boardList[i]; 
+		}
+		
+		// 가장 마지막 위치의 객체를 null 로 비운다
+		boardList[count -1] = null; 
+		// 삭제후 게시글의 개수를 -1 감소 
+		count--; 
+		// 글번호 재 세팅 : 
+		for (int i = 0; i < boardList.length; i++) {
+			if (boardList[i] != null)
+				boardList[i].setNo(i+1); 
+		}
+		// 게시글 삭제 성공! 
+		System.out.println(no + "번 게시글을 삭제하였습니다.");
+		return true; 
+		
 	}
 
 }

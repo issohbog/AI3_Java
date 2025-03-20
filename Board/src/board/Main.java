@@ -48,52 +48,63 @@ public class Main {
 						break;
 		
 			case 3: 	// 게시글 조회 
-						System.out.println("조회할 게시글 번호를 입력하세요.");
+						System.out.print("조회할 글 번호 : ");
 						int no = sc.nextInt();
-						Board oneboard = boardInterface.read(no);
-						System.out.println(oneboard);
+						sc.nextLine();
+						Board selectedBoard = boardInterface.read(no);
+						if(selectedBoard != null) {
+							System.out.println("::::: 조회된 게시글 :::::");
+							System.out.println(selectedBoard);
+						}
 						break; 
 						
 			case 4: 	// 게시글 수정		
-						System.out.println("수정할 게시글 번호를 입력하세요.");
-						no = sc.nextInt();
+						// 입력 : 수정번호/ 제목/ 작성자/ 내용
+						System.out.print("수정할 글 번호 : ");
+						int updateNo = sc.nextInt();
 						
 						sc.nextLine();					//  enter 초기화
 						
 						System.out.println("제목 : ");
-						title = sc.nextLine(); 
+						String updateTitle = sc.nextLine(); 
 						System.out.println("작성자 : ");
-						writer = sc.nextLine(); 
+						String updateWriter= sc.nextLine(); 
 						System.out.println("내용 : ");
-						content = sc.nextLine(); 
+						String updateContent= sc.nextLine(); 
 
 						
-						Board upboard = new Board(no, title, writer, content);
-						boolean successUpdate = boardInterface.update(upboard);
+						Board updateBoard = new Board(updateTitle, updateWriter, updateContent);
+						updateBoard.setNo(updateNo); 
+						boolean result = boardInterface.update(updateBoard);
 						
-						if(successUpdate == true) {
-							System.out.println("게시글 수정에 성공하였습니다. ");
+						if(result) {
+							System.out.println("게시글 수정 완료! ");
+						}
+						else { 
+							System.out.println("게시글 수정 실패!");
 						}
 						break;
 						
 			case 5: 	// 게시글 삭제
-						System.out.println("삭제할 게시글 번호를 입력하세요");
-						no = sc.nextInt();
+						System.out.print("삭제할 글 번호 : ");
+						int deleteNo = sc.nextInt();
 						
-						boolean successDelete = boardInterface.delete(no);
+						sc.nextLine();
 						
-						if(successDelete == true) {
-							System.out.println("게시글을 삭제하였습니다. ");
+						result = boardInterface.delete(deleteNo);
+						
+						if(result) {
+							System.out.println("게시글 삭제 완료! ");
+						}
+						else { 
+							System.out.println("게시글 삭제 실패!");
 						}
 						
 						break; 
-			default:
-				break;
 			}
-			
-			
 		} while (true);
-
+		System.out.println("프로그램을 종료합니다.");
 		sc.close();
 	}
 }
+

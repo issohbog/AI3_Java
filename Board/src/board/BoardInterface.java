@@ -28,7 +28,7 @@ public interface BoardInterface {
 	/**
 	 * 데이터 목록
 	 * - 게시글이 존재하는지 확인하고 1개의 게시글도 없으면 null 반환
-	 * - 게시글이 존재하면, 전체 게시글 목록인 Board[] 을 반환
+	 * - 게시글이 존재하면, 전체 게시글 목록인 Board[] (Board 클래스타입의 배열)을 반환
 	 * @return
 	 */
 	Board[] list(); 
