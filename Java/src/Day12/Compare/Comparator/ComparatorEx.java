@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
+/** 
  * 1. Comparator 인터페이스구현 
  * 2. compare() 메소드 오버라이딩 
  * 		- 정렬 기준 1: 나이순 내림차순 
