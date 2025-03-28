@@ -15,7 +15,7 @@ public class SerializePerson {
 		
 		// Person 객체 생성 
 		Person person = new Person(name, age);
-		
+		   
 		// Person 객체 직렬화 
 		// : 객체를 바이트 데이터로 변환하여 파일로 저장 
 		try (
