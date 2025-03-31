@@ -13,7 +13,8 @@ public class Main {
 	// - 2.2) 짝수 합만 구하도록 반복문안에 if 문 작성 
 	// 			홀수와 같은 과정 반복 
 	// 3. 약수 구하기 
-	// 
+	// 10 -> 1 2 5 10 
+	// 1~5(N/2)까지 나눈 나머지가 0인지 
 	
 	
 	public static void main(String[] args) {
@@ -42,7 +43,15 @@ public class Main {
 				System.out.print(i + "+");
 			}
 		}
-		System.out.print("=" + evenSum);
+		System.out.println("=" + evenSum);
+		
+		for (int i = 1; i <= N ; i++) {
+			if (N % i == 0) {
+				System.out.print(i + " ");
+			}
+		}
+		
+		
 	}
 	
 }
